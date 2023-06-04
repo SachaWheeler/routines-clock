@@ -6,7 +6,7 @@ BLUE = (0, 255, 255)
 
 schedule = [
     # [start_hour_min, end_hour_min, color, label]
-    ['22:30', '06:30', GREY, 'sleep'],
+    ['22:30', '06:30', GREEN, 'sleep'],
     [],
     [],
     [],

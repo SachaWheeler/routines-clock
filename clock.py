@@ -32,6 +32,8 @@ MINUTES_IN_HOUR = 60
 SECONDS_IN_MINUTE = 60
 SIZE = (W, H)
 
+RECT = pygame.Rect((0, 0), (CLOCK_W, CLOCK_H))
+
 def circle_point(center, radius, theta):
     """Calculates the location of a point of a circle given the circle's
        center and radius as well as the point's angle from the xx' axis"""
@@ -67,10 +69,19 @@ while not done:
 
     screen.fill(WHITE)
 
-    # draw the scvhedule
+    # draw the schedule
     for arc in schedule:
         # ['22:30', '06:30', (224, 224, 224), 'sleep']
-        arc(surface, arc[2], [0, 0, CLOCK_W, CLOCK_H], start_angle, stop_angle) -> Rect
+        [start, end, color, label] = arc
+        (start_h, start_m) = start.split(":")
+        (end_h, end_m) = end.split(":")
+        # print(start_h, start_m, end_h, end_m)
+        # get_angle(now.hour + 1.0 * now.minute / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+        start_angle = get_angle(float(start_h) + 1 * float(start_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+        end_angle = get_angle(float(end_h) + 1 * float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+        print(start_angle, end_angle, color)
+        pygame.draw.arc(screen, color, RECT, start_angle, end_angle)
+        break
 
     now = datetime.now()
 
