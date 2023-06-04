@@ -3,7 +3,7 @@ environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1' # remove pygame announcement
 import pygame
 from datetime import datetime
 import math
-from calendar import schedule, events
+from calendar import SCHEDULE, EVENTS, COLORS
 
 
 BLACK = (0, 0, 0)
@@ -80,23 +80,29 @@ while not done:
     center = (c_x, c_y)
 
     # draw the schedule
-    for arc in schedule:
+    for arc in SCHEDULE:
         # ['22:30', '06:30', (224, 224, 224), 'sleep']
-        [start, end, color, label] = arc
+        [start, end, label] = arc
         (start_h, start_m) = start.split(":")
         (end_h, end_m) = end.split(":")
 
         start_angle = get_angle(float(start_h) + 1 * float(start_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
         end_angle = get_angle(float(end_h) + 1 * float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
 
-        pygame.draw.arc(screen, color, RECT, PI_2 - end_angle, PI_2 - start_angle, ARC_WIDTH)
+        # draw schedule sectors
+        pygame.draw.arc(screen, COLORS[label], RECT, PI_2 - end_angle, PI_2 - start_angle, ARC_WIDTH)
+
+        # draw schedule labels
         label_text = label_font.render(str(label), True, RED)
+        (label_w, label_h) = label_font.size(str(label))
+        #print(label_w, label_h)
         if end_angle > start_angle:
             theta = (start_angle + end_angle) / 2
         else:
             subtract = PI_2 - start_angle
             theta = (end_angle  - subtract) / 2
-        screen.blit(label_text, circle_point(center, LABEL_R, theta))
+        label_x, label_y = (circle_point(center, LABEL_R, theta))
+        screen.blit(label_text, (label_x - label_w / 2, label_y))
 
 
     now = datetime.now()

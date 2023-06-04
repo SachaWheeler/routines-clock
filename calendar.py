@@ -4,18 +4,33 @@ LIGHT_GREEN = (102, 255, 102)
 ORANGE = (255, 153, 51)
 BLUE = (0, 255, 255)
 
-schedule = [
+COLORS = {
+    "sleep": GREY,
+    "read": LIGHT_GREEN,
+    "coffee": ORANGE,
+    "breakfast": ORANGE,
+    "work": GREEN,
+    "lunch": ORANGE,
+    "exercise": BLUE,
+    "personal": LIGHT_GREEN,
+    "tv": ORANGE,
+        }
+
+SCHEDULE = [
     # [start_hour_min, end_hour_min, color, label]
-    ['22:30', '06:30', GREY, 'sleep'],
-    ['06:30', '08:30', GREEN, 'read'],
-    ['08:30', '09:00', ORANGE, 'coffee'],
-    ['09:15', '12:00', LIGHT_GREEN, 'work'],
-    ['12:00', '14:00', ORANGE, 'lunch'],
-    ['14:00', '15:00', BLUE, 'exercise'],
-    ['15:00', '16:00', LIGHT_GREEN, 'work'],
+    ['22:30', '06:30', 'sleep'],
+    ['06:30', '07:00', 'coffee'],
+    ['07:00', '08:45', 'read'],
+    ['08:45', '09:00', 'breakfast'],
+    ['09:15', '12:00', 'work'],
+    ['12:00', '14:00', 'lunch'],
+    ['14:00', '15:00', 'exercise'],
+    ['15:00', '16:00', 'work'],
+    ['16:00', '20:30', 'personal'],
+    ['20:30', '22:30', 'tv'],
         ]
 
-events = [
+EVENTS = [
     # [hour_min, color, label]
-    ['12:00', BLUE, 'have a drink'],
+    ['12:00', 'have a drink'],
         ]
