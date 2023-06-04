@@ -1,6 +1,8 @@
 import pygame
 from datetime import datetime
 import math
+from calendar import schedule, events
+
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -25,7 +27,7 @@ SECOND_STROKE = 2 # second hand stroke width
 CLOCK_STROKE = 2 # clock circle stroke width
 CENTER_W = 10 # clock center mount width
 CENTER_H = 10 # clock center mount height
-HOURS_IN_CLOCK = 12
+HOURS_IN_CLOCK = 24
 MINUTES_IN_HOUR = 60
 SECONDS_IN_MINUTE = 60
 SIZE = (W, H)
@@ -65,19 +67,17 @@ while not done:
 
     screen.fill(WHITE)
 
+    # draw the scvhedule
+    for arc in schedule:
+        # ['22:30', '06:30', (224, 224, 224), 'sleep']
+        arc(surface, arc[2], [0, 0, CLOCK_W, CLOCK_H], start_angle, stop_angle) -> Rect
+
     now = datetime.now()
 
     c_x, c_y = CLOCK_W / 2, CLOCK_H / 2
     center = (c_x, c_y)
 
     # draw clock
-    pygame.draw.circle(
-        screen,
-        BLACK,
-        center, CLOCK_W / 2 - MARGIN_W / 2,
-        CLOCK_STROKE
-    )
-    # draw clock mount
     pygame.draw.circle(
         screen,
         BLACK,
