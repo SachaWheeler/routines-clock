@@ -37,6 +37,7 @@ SIZE = (W, H)
 ARC_WIDTH = 100
 RECT = pygame.Rect((0, 0), (CLOCK_W, CLOCK_H))
 PI_2 = 3.14159 * 2
+LABEL_R = CLOCK_R * 5.7 / 10 # distance of hour markings from center
 
 def circle_point(center, radius, theta):
     """Calculates the location of a point of a circle given the circle's
@@ -63,6 +64,8 @@ pygame.display.set_caption('Clock')
 hour_font = pygame.font.SysFont('Calibri', 25, True, False)
 digital_font = pygame.font.SysFont('Calibri', 32, False, False)
 
+label_font = pygame.font.SysFont('Calibri', 18, True, False)
+
 clock = pygame.time.Clock()
 done = False
 
@@ -73,23 +76,30 @@ while not done:
 
     screen.fill(WHITE)
 
+    c_x, c_y = CLOCK_W / 2, CLOCK_H / 2
+    center = (c_x, c_y)
+
     # draw the schedule
     for arc in schedule:
         # ['22:30', '06:30', (224, 224, 224), 'sleep']
         [start, end, color, label] = arc
         (start_h, start_m) = start.split(":")
         (end_h, end_m) = end.split(":")
-        # print(start_h, start_m, end_h, end_m)
-        # get_angle(now.hour + 1.0 * now.minute / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+
         start_angle = get_angle(float(start_h) + 1 * float(start_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
         end_angle = get_angle(float(end_h) + 1 * float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
-        #print(start_angle, end_angle, color)
+
         pygame.draw.arc(screen, color, RECT, PI_2 - end_angle, PI_2 - start_angle, ARC_WIDTH)
+        label_text = label_font.render(str(label), True, RED)
+        if end_angle > start_angle:
+            theta = (start_angle + end_angle) / 2
+        else:
+            subtract = PI_2 - start_angle
+            theta = (end_angle  - subtract) / 2
+        screen.blit(label_text, circle_point(center, LABEL_R, theta))
+
 
     now = datetime.now()
-
-    c_x, c_y = CLOCK_W / 2, CLOCK_H / 2
-    center = (c_x, c_y)
 
     # draw clock
     pygame.draw.circle(

@@ -8,10 +8,10 @@ schedule = [
     # [start_hour_min, end_hour_min, color, label]
     ['22:30', '06:30', GREY, 'sleep'],
     ['06:30', '08:30', GREEN, 'read'],
-    ['08:30', '09:00', ORANGE, 'breakfast, coffee'],
+    ['08:30', '09:00', ORANGE, 'coffee'],
     ['09:15', '12:00', LIGHT_GREEN, 'work'],
     ['12:00', '14:00', ORANGE, 'lunch'],
-    ['14:00', '15:00', BLUE, 'walk, read'],
+    ['14:00', '15:00', BLUE, 'exercise'],
     ['15:00', '16:00', LIGHT_GREEN, 'work'],
         ]
 
