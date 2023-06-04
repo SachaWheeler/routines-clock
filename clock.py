@@ -1,3 +1,5 @@
+from os import environ, path
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1' # remove pygame announcement
 import pygame
 from datetime import datetime
 import math
