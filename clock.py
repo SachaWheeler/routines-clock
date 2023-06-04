@@ -32,7 +32,9 @@ MINUTES_IN_HOUR = 60
 SECONDS_IN_MINUTE = 60
 SIZE = (W, H)
 
+ARC_WIDTH = 100
 RECT = pygame.Rect((0, 0), (CLOCK_W, CLOCK_H))
+PI_2 = 3.14159 * 2
 
 def circle_point(center, radius, theta):
     """Calculates the location of a point of a circle given the circle's
@@ -79,9 +81,8 @@ while not done:
         # get_angle(now.hour + 1.0 * now.minute / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
         start_angle = get_angle(float(start_h) + 1 * float(start_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
         end_angle = get_angle(float(end_h) + 1 * float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
-        print(start_angle, end_angle, color)
-        pygame.draw.arc(screen, color, RECT, start_angle, end_angle)
-        break
+        #print(start_angle, end_angle, color)
+        pygame.draw.arc(screen, color, RECT, PI_2 - end_angle, PI_2 - start_angle, ARC_WIDTH)
 
     now = datetime.now()
 
