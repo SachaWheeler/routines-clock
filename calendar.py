@@ -4,30 +4,34 @@ LIGHT_GREEN = (102, 255, 102)
 ORANGE = (255, 153, 51)
 BLUE = (0, 255, 255)
 
+SLEEP = 1,
+ENERGY = 2,
+PRIVATE = 3,
+WORK = 4,
+EXERCISE = 5,
+ENTERTAINMENT = 6
+
 COLORS = {
-    "sleep": GREY,
-    "read": LIGHT_GREEN,
-    "coffee": ORANGE,
-    "breakfast": ORANGE,
-    "work": GREEN,
-    "lunch": ORANGE,
-    "exercise": BLUE,
-    "personal": LIGHT_GREEN,
-    "tv": ORANGE,
-        }
+    SLEEP: GREY,
+    ENERGY: ORANGE,
+    PRIVATE: LIGHT_GREEN,
+    WORK: GREEN,
+    EXERCISE: BLUE,
+    ENTERTAINMENT: ORANGE
+}
 
 SCHEDULE = [
     # [start_hour_min, end_hour_min, color, label]
-    ['22:30', '06:00', 'sleep'],
-    ['06:00', '06:30', 'coffee'],
-    ['06:30', '08:30', 'read'],
-    ['08:30', '09:00', 'breakfast'],
-    ['09:00', '12:00', 'work'],
-    ['12:00', '13:30', 'lunch'],
-    ['13:30', '15:00', 'exercise'],
-    ['15:00', '16:30', 'work'],
-    ['16:30', '20:30', 'personal'],
-    ['20:30', '22:30', 'tv'],
+    ['22:30', '06:00', 'sleep', SLEEP],
+    ['06:00', '06:30', 'coffee', ENERGY],
+    ['06:30', '08:30', 'read', PRIVATE],
+    ['08:30', '09:00', 'breakfast', ENERGY],
+    ['09:00', '12:00', 'work', WORK],
+    ['12:00', '13:30', 'lunch', ENERGY],
+    ['13:30', '15:00', 'exercise', EXERCISE],
+    ['15:00', '16:30', 'work', WORK],
+    ['16:30', '20:30', 'personal', PRIVATE],
+    ['20:30', '22:30', 'tv', ENTERTAINMENT],
         ]
 
 EVENTS = [

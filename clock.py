@@ -104,14 +104,15 @@ while not done:
 
     # draw the schedule
     for arc in SCHEDULE:
-        [start, end, label] = arc
+        [start, end, label, label_color] = arc
         (start_h, start_m) = start.split(":")
         (end_h, end_m) = end.split(":")
-        # print current stage
+
         start_mins = int(start_h) * 60 + int(start_m)
         end_mins = int(end_h) * 60 + int(end_m)
         now_mins = now.hour * 60 + now.minute
 
+        # print current stage
         if start_mins <= now_mins and now_mins < end_mins:
             # text outline
             for (x, y, color) in get_outline_coords(WHITE, BLACK):
@@ -124,11 +125,11 @@ while not done:
 
         # draw schedule sectors
         pygame.draw.arc(screen,
-                COLORS[label],
+                COLORS[label_color],
                 RECT, PI_2 - end_angle, PI_2 - start_angle,
                 ARC_WIDTH)
 
-        for (x, y, color) in get_outline_coords(BLACK, COLORS[label]):
+        for (x, y, color) in get_outline_coords(BLACK, COLORS[label_color]):
             # draw schedule labels
             label_text = label_font.render(str(label), True, color)
             (label_w, label_h) = label_font.size(str(label))
