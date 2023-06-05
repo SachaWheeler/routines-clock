@@ -142,7 +142,7 @@ while not done:
                 subtract = 2 * math.pi - start_angle
                 theta = (end_angle  - subtract) / 2
             label_x, label_y = (circle_point(center, LABEL_R, theta))
-            screen.blit(label_text, (label_x - label_w / 2 + x, label_y + x))
+            screen.blit(label_text, (label_x - label_w / 2 + x, label_y - label_h / 2 + x))
 
     for cal_event in EVENTS:
         #['12:00', 'have a drink']

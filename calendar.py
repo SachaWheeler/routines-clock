@@ -1,7 +1,8 @@
 GREY = (224, 224, 224)
 GREEN = (0, 204, 0)
 LIGHT_GREEN = (102, 255, 102)
-ORANGE = (255, 153, 51)
+ORANGE = (255, 128, 0)
+PURPLE = (255, 0, 255)
 BLUE = (0, 255, 255)
 
 SLEEP = 1,
@@ -17,7 +18,7 @@ COLORS = {
     PRIVATE: LIGHT_GREEN,
     WORK: GREEN,
     EXERCISE: BLUE,
-    ENTERTAINMENT: ORANGE
+    ENTERTAINMENT: PURPLE
 }
 
 SCHEDULE = [
@@ -38,4 +39,5 @@ EVENTS = [
     # [hour_min, color, label]
     ['12:00', 'have a drink'],
     ['17:00', 'turn off phone'],
+    ['20:00', 'smoke'],
         ]
