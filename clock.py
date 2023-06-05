@@ -195,7 +195,7 @@ while not done:
         text = hour_font.render(str(hour), True, BLACK)
         (text_w, text_h) = hour_font.size(str(hour))
         text_x, text_y = (circle_point(center, TEXT_R, theta))
-        screen.blit(text, (text_x - text_w / 2, text_y))
+        screen.blit(text, (text_x - text_w / 2, text_y - text_h / 2))
 
     # draw minute markings (lines)
     for minute in range(0, MINUTES_IN_HOUR):
