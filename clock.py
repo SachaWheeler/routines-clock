@@ -10,6 +10,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREY = (128, 128, 128)
 RED = (255, 0, 0)
+PINK = (128, 0, 0)
 
 DIGITAL_H = 100 # height of digital clock
 W = 700 # screen width
@@ -37,6 +38,7 @@ SIZE = (W, H)
 
 ARC_WIDTH = 100
 RECT = pygame.Rect((0, 0), (CLOCK_W, CLOCK_H))
+INNER_RECT = pygame.Rect((ARC_WIDTH, ARC_WIDTH), (CLOCK_W - ARC_WIDTH * 2, CLOCK_H - ARC_WIDTH * 2))
 PI_2 = 3.14159 * 2
 LABEL_R = CLOCK_R * 5.7 / 10 # distance of hour markings from center
 
@@ -83,11 +85,19 @@ while not done:
 
     now = datetime.now()
 
+    midnight = get_angle(0, HOURS_IN_CLOCK)
+    current = get_angle(now.hour + 1.0 * now.minute / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+    pygame.draw.arc(screen,
+        PINK,
+        INNER_RECT, PI_2 - current, PI_2 - midnight,
+        ARC_WIDTH)
+
     # draw the schedule
     for arc in SCHEDULE:
         [start, end, label] = arc
         (start_h, start_m) = start.split(":")
         (end_h, end_m) = end.split(":")
+        # print current stage
         if int(start_h) <= now.hour and int(start_m) <= now.minute and\
            int(end_h) >= now.hour and int(end_m) >= now.minute:
 
@@ -99,7 +109,10 @@ while not done:
         end_angle = get_angle(float(end_h) + 1 * float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
 
         # draw schedule sectors
-        pygame.draw.arc(screen, COLORS[label], RECT, PI_2 - end_angle, PI_2 - start_angle, ARC_WIDTH)
+        pygame.draw.arc(screen,
+                COLORS[label],
+                RECT, PI_2 - end_angle, PI_2 - start_angle,
+                ARC_WIDTH)
 
         # draw schedule labels
         label_text = label_font.render(str(label), True, COLORS[label])
