@@ -66,6 +66,7 @@ pygame.display.set_caption('Clock')
 hour_font = pygame.font.SysFont('Calibri', 25, True, False)
 digital_font = pygame.font.SysFont('Calibri', 32, False, False)
 label_font = pygame.font.SysFont('Calibri', 18, True, False)
+stage_font = pygame.font.SysFont('Calibri', 48, True, False)
 
 clock = pygame.time.Clock()
 done = False
@@ -80,11 +81,19 @@ while not done:
     c_x, c_y = CLOCK_W / 2, CLOCK_H / 2
     center = (c_x, c_y)
 
+    now = datetime.now()
+
     # draw the schedule
     for arc in SCHEDULE:
         [start, end, label] = arc
         (start_h, start_m) = start.split(":")
         (end_h, end_m) = end.split(":")
+        if int(start_h) <= now.hour and int(start_m) <= now.minute and\
+           int(end_h) >= now.hour and int(end_m) >= now.minute:
+
+            stage_text = stage_font.render(str(label), True, RED)
+            (stage_w, stage_h) = stage_font.size(str(label))
+            screen.blit(stage_text, (c_x - stage_w/2, c_y + 50))
 
         start_angle = get_angle(float(start_h) + 1 * float(start_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
         end_angle = get_angle(float(end_h) + 1 * float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
@@ -103,9 +112,6 @@ while not done:
             theta = (end_angle  - subtract) / 2
         label_x, label_y = (circle_point(center, LABEL_R, theta))
         screen.blit(label_text, (label_x - label_w / 2, label_y))
-
-
-    now = datetime.now()
 
     # draw clock
     pygame.draw.circle(
