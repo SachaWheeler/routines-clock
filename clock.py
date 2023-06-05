@@ -1,7 +1,7 @@
 from os import environ, path
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1' # remove pygame announcement
 import pygame
-from datetime import datetime
+from datetime import datetime, date
 import math
 from calendar import SCHEDULE, EVENTS, COLORS
 
@@ -12,6 +12,8 @@ GREY = (128, 128, 128)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 PINK = (128, 0, 0)
+
+FONT = 'Calibri'
 
 DIGITAL_H = 100 # height of digital clock
 W = 700 # screen width
@@ -40,10 +42,12 @@ SIZE = (W, H)
 ARC_WIDTH = 100
 RECT = pygame.Rect((0, 0), (CLOCK_W, CLOCK_H))
 INNER_RECT = pygame.Rect((ARC_WIDTH, ARC_WIDTH), (CLOCK_W - ARC_WIDTH * 2, CLOCK_H - ARC_WIDTH * 2))
-PI_2 = 3.14159 * 2
 LABEL_R = CLOCK_R * 5.7 / 10 # distance of hour markings from center
 EVENT_SIZE = 6
 EVENT_TEXT_OFFSET = 7
+
+STAGE_TEXT_OFFSET = 110
+STAGE_PROGRESS_OFFSET = 60
 
 def circle_point(center, radius, theta):
     """Calculates the location of a point of a circle given the circle's
@@ -72,13 +76,14 @@ def get_outline_coords(outline_color, text_color):
 
 pygame.init()
 screen = pygame.display.set_mode(SIZE)
-pygame.display.set_caption('Clock')
+pygame.display.set_caption(str(date.today()))
 
-hour_font = pygame.font.SysFont('Calibri', 25, True, False)
-digital_font = pygame.font.SysFont('Calibri', 32, False, False)
-label_font = pygame.font.SysFont('Calibri', 18, True, False)
-event_font = pygame.font.SysFont('Calibri', 14, True, False)
-stage_font = pygame.font.SysFont('Calibri', 48, True, False)
+hour_font = pygame.font.SysFont(FONT, 25, True, False)
+digital_font = pygame.font.SysFont(FONT, 32, False, False)
+label_font = pygame.font.SysFont(FONT, 18, True, False)
+event_font = pygame.font.SysFont(FONT, 14, True, False)
+stage_font = pygame.font.SysFont(FONT, 48, True, False)
+stage_progress_font = pygame.font.SysFont(FONT, 32, True, False)
 
 clock = pygame.time.Clock()
 done = False
@@ -99,7 +104,7 @@ while not done:
     current = get_angle(now.hour + 1.0 * now.minute / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
     pygame.draw.arc(screen,
         PINK,
-        INNER_RECT, PI_2 - current, PI_2 - midnight,
+        INNER_RECT, 2 * math.pi - current, 2 * math.pi - midnight,
         ARC_WIDTH)
 
     # draw the schedule
@@ -114,11 +119,8 @@ while not done:
 
         # print current stage
         if start_mins <= now_mins and now_mins < end_mins:
-            # text outline
-            for (x, y, color) in get_outline_coords(WHITE, BLACK):
-                stage_text = stage_font.render(str(label), True, color)
-                (stage_w, stage_h) = stage_font.size(str(label))
-                screen.blit(stage_text, (c_x - stage_w/2 + x, c_y + 50 + y))
+            stage = str(label)
+            stage_progress = f'{int((now_mins - start_mins) * 100 / (end_mins - start_mins))}%'
 
         start_angle = get_angle(float(start_h) + 1 * float(start_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
         end_angle = get_angle(float(end_h) + 1 * float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
@@ -126,7 +128,7 @@ while not done:
         # draw schedule sectors
         pygame.draw.arc(screen,
                 COLORS[label_color],
-                RECT, PI_2 - end_angle, PI_2 - start_angle,
+                RECT, 2 * math.pi - end_angle, 2 * math.pi - start_angle,
                 ARC_WIDTH)
 
         for (x, y, color) in get_outline_coords(BLACK, COLORS[label_color]):
@@ -137,7 +139,7 @@ while not done:
             if end_angle > start_angle:
                 theta = (start_angle + end_angle) / 2
             else:
-                subtract = PI_2 - start_angle
+                subtract = 2 * math.pi - start_angle
                 theta = (end_angle  - subtract) / 2
             label_x, label_y = (circle_point(center, LABEL_R, theta))
             screen.blit(label_text, (label_x - label_w / 2 + x, label_y + x))
@@ -148,7 +150,7 @@ while not done:
         (event_h, event_m) = event_time.split(":")
 
         theta = get_angle(float(event_h) + 1.0 * float(event_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
-        event_x, event_y = (circle_point(center, CLOCK_W / 2 - ARC_WIDTH, theta))
+        event_x, event_y = (circle_point(center, CLOCK_W / 2 - ARC_WIDTH + 20, theta))
         pygame.draw.circle(
             screen,
             BLUE,
@@ -176,6 +178,16 @@ while not done:
         (SECOND_R, second_theta, RED, SECOND_STROKE),
     ):
         line_at_angle(screen, center, radius, theta, color, stroke)
+
+    # print current stage (over the hands) with progress
+    for (x, y, color) in get_outline_coords(WHITE, BLACK):
+        stage_text = stage_font.render(stage, True, color)
+        (stage_w, stage_h) = stage_font.size(stage)
+        screen.blit(stage_text, (c_x - stage_w/2 + x, c_y - STAGE_TEXT_OFFSET + y))
+    for (x, y, color) in get_outline_coords(WHITE, BLACK):
+        stage_percent = stage_progress_font.render(stage_progress, True, color)
+        (stage_prog_w, stage_prog_h) = stage_progress_font.size(stage_progress)
+        screen.blit(stage_percent, (c_x - stage_prog_w/2 + x, c_y - STAGE_PROGRESS_OFFSET + y))
 
     # draw hour markings (text)
     for hour in range(1, HOURS_IN_CLOCK + 1):
