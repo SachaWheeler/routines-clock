@@ -10,6 +10,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREY = (128, 128, 128)
 RED = (255, 0, 0)
+BLUE = (0, 0, 255)
 PINK = (128, 0, 0)
 
 DIGITAL_H = 100 # height of digital clock
@@ -41,6 +42,8 @@ RECT = pygame.Rect((0, 0), (CLOCK_W, CLOCK_H))
 INNER_RECT = pygame.Rect((ARC_WIDTH, ARC_WIDTH), (CLOCK_W - ARC_WIDTH * 2, CLOCK_H - ARC_WIDTH * 2))
 PI_2 = 3.14159 * 2
 LABEL_R = CLOCK_R * 5.7 / 10 # distance of hour markings from center
+EVENT_SIZE = 6
+EVENT_TEXT_OFFSET = 7
 
 def circle_point(center, radius, theta):
     """Calculates the location of a point of a circle given the circle's
@@ -68,6 +71,7 @@ pygame.display.set_caption('Clock')
 hour_font = pygame.font.SysFont('Calibri', 25, True, False)
 digital_font = pygame.font.SysFont('Calibri', 32, False, False)
 label_font = pygame.font.SysFont('Calibri', 18, True, False)
+event_font = pygame.font.SysFont('Calibri', 14, True, False)
 stage_font = pygame.font.SysFont('Calibri', 48, True, False)
 
 clock = pygame.time.Clock()
@@ -98,11 +102,17 @@ while not done:
         (start_h, start_m) = start.split(":")
         (end_h, end_m) = end.split(":")
         # print current stage
-        if int(start_h) <= now.hour and int(start_m) <= now.minute and\
-           int(end_h) >= now.hour and int(end_m) >= now.minute:
+        start_mins = int(start_h) * 60 + int(start_m)
+        end_mins = int(end_h) * 60 + int(end_m)
+        now_mins = now.hour * 60 + now.minute
 
-            stage_text = stage_font.render(str(label), True, RED)
+        if start_mins <= now_mins and now_mins < end_mins:
+            stage_text = stage_font.render(str(label), True, WHITE)
             (stage_w, stage_h) = stage_font.size(str(label))
+            # outline
+            for (x, y) in [(-1, -1), (-1, 1), (1, 1), (1, -1)]:
+                screen.blit(stage_text, (c_x - stage_w/2 + x, c_y + 50 + y))
+            stage_text = stage_font.render(str(label), True, BLACK)
             screen.blit(stage_text, (c_x - stage_w/2, c_y + 50))
 
         start_angle = get_angle(float(start_h) + 1 * float(start_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
@@ -117,7 +127,7 @@ while not done:
         # draw schedule labels
         label_text = label_font.render(str(label), True, COLORS[label])
         (label_w, label_h) = label_font.size(str(label))
-        #print(label_w, label_h)
+
         if end_angle > start_angle:
             theta = (start_angle + end_angle) / 2
         else:
@@ -125,6 +135,21 @@ while not done:
             theta = (end_angle  - subtract) / 2
         label_x, label_y = (circle_point(center, LABEL_R, theta))
         screen.blit(label_text, (label_x - label_w / 2, label_y))
+
+    for cal_event in EVENTS:
+        #['12:00', 'have a drink']
+        (event_h, event_m) = cal_event[0].split(":")
+
+        theta = get_angle(float(event_h) + 1.0 * float(event_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+        event_x, event_y = (circle_point(center, CLOCK_W / 2 - ARC_WIDTH, theta))
+        pygame.draw.circle(
+            screen,
+            BLUE,
+            (event_x, event_y), EVENT_SIZE, EVENT_SIZE
+        )
+        #screen.blit(text, (text_x - text_w / 2, text_y))
+        event_text = event_font.render(cal_event[1], True, BLUE)
+        screen.blit(event_text, (event_x + EVENT_TEXT_OFFSET, event_y - EVENT_TEXT_OFFSET))
 
     # draw clock
     pygame.draw.circle(
