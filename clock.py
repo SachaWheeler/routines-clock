@@ -8,6 +8,7 @@ from calendar import SCHEDULE, EVENTS, COLORS
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+GREY = (128, 128, 128)
 RED = (255, 0, 0)
 
 DIGITAL_H = 100 # height of digital clock
@@ -61,9 +62,9 @@ def get_angle(unit, total):
 pygame.init()
 screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption('Clock')
+
 hour_font = pygame.font.SysFont('Calibri', 25, True, False)
 digital_font = pygame.font.SysFont('Calibri', 32, False, False)
-
 label_font = pygame.font.SysFont('Calibri', 18, True, False)
 
 clock = pygame.time.Clock()
@@ -74,14 +75,13 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
 
-    screen.fill(WHITE)
+    screen.fill(GREY)
 
     c_x, c_y = CLOCK_W / 2, CLOCK_H / 2
     center = (c_x, c_y)
 
     # draw the schedule
     for arc in SCHEDULE:
-        # ['22:30', '06:30', (224, 224, 224), 'sleep']
         [start, end, label] = arc
         (start_h, start_m) = start.split(":")
         (end_h, end_m) = end.split(":")
@@ -131,7 +131,9 @@ while not done:
     for hour in range(1, HOURS_IN_CLOCK + 1):
         theta = get_angle(hour, HOURS_IN_CLOCK)
         text = hour_font.render(str(hour), True, BLACK)
-        screen.blit(text, circle_point(center, TEXT_R, theta))
+        (text_w, text_h) = hour_font.size(str(hour))
+        text_x, text_y = (circle_point(center, TEXT_R, theta))
+        screen.blit(text, (text_x - text_w / 2, text_y))
 
     # draw minute markings (lines)
     for minute in range(0, MINUTES_IN_HOUR):
