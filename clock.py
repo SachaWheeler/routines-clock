@@ -64,6 +64,12 @@ def get_angle(unit, total):
        o'clock and moving clock-wise."""
     return 2 * math.pi * unit / total - math.pi / 2
 
+def get_outline_coords(outline_color, text_color):
+    return [(-1, -1, outline_color), (-1, 1, outline_color),
+            (1, 1, outline_color), (1, -1, outline_color),
+            (0, 0, text_color)]
+
+
 pygame.init()
 screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption('Clock')
@@ -108,8 +114,7 @@ while not done:
 
         if start_mins <= now_mins and now_mins < end_mins:
             # text outline
-            for (x, y, color) in [(-1, -1, WHITE), (-1, 1, WHITE), (1, 1, WHITE), (1, -1, WHITE),
-                    (0, 0, BLACK)]:
+            for (x, y, color) in get_outline_coords(WHITE, BLACK):
                 stage_text = stage_font.render(str(label), True, color)
                 (stage_w, stage_h) = stage_font.size(str(label))
                 screen.blit(stage_text, (c_x - stage_w/2 + x, c_y + 50 + y))
@@ -123,17 +128,18 @@ while not done:
                 RECT, PI_2 - end_angle, PI_2 - start_angle,
                 ARC_WIDTH)
 
-        # draw schedule labels
-        label_text = label_font.render(str(label), True, COLORS[label])
-        (label_w, label_h) = label_font.size(str(label))
+        for (x, y, color) in get_outline_coords(BLACK, COLORS[label]):
+            # draw schedule labels
+            label_text = label_font.render(str(label), True, color)
+            (label_w, label_h) = label_font.size(str(label))
 
-        if end_angle > start_angle:
-            theta = (start_angle + end_angle) / 2
-        else:
-            subtract = PI_2 - start_angle
-            theta = (end_angle  - subtract) / 2
-        label_x, label_y = (circle_point(center, LABEL_R, theta))
-        screen.blit(label_text, (label_x - label_w / 2, label_y))
+            if end_angle > start_angle:
+                theta = (start_angle + end_angle) / 2
+            else:
+                subtract = PI_2 - start_angle
+                theta = (end_angle  - subtract) / 2
+            label_x, label_y = (circle_point(center, LABEL_R, theta))
+            screen.blit(label_text, (label_x - label_w / 2 + x, label_y + x))
 
     for cal_event in EVENTS:
         #['12:00', 'have a drink']

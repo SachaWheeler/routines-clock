@@ -18,11 +18,11 @@ COLORS = {
 
 SCHEDULE = [
     # [start_hour_min, end_hour_min, color, label]
-    ['22:30', '06:30', 'sleep'],
-    ['06:30', '07:00', 'coffee'],
-    ['07:00', '08:45', 'read'],
-    ['08:45', '09:15', 'breakfast'],
-    ['09:15', '12:00', 'work'],
+    ['22:30', '06:00', 'sleep'],
+    ['06:00', '06:30', 'coffee'],
+    ['06:30', '08:30', 'read'],
+    ['08:30', '09:00', 'breakfast'],
+    ['09:00', '12:00', 'work'],
     ['12:00', '13:30', 'lunch'],
     ['13:30', '15:00', 'exercise'],
     ['15:00', '16:30', 'work'],
@@ -33,4 +33,5 @@ SCHEDULE = [
 EVENTS = [
     # [hour_min, color, label]
     ['12:00', 'have a drink'],
+    ['17:00', 'turn off phone'],
         ]
