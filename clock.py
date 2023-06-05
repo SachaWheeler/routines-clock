@@ -107,13 +107,12 @@ while not done:
         now_mins = now.hour * 60 + now.minute
 
         if start_mins <= now_mins and now_mins < end_mins:
-            stage_text = stage_font.render(str(label), True, WHITE)
-            (stage_w, stage_h) = stage_font.size(str(label))
-            # outline
-            for (x, y) in [(-1, -1), (-1, 1), (1, 1), (1, -1)]:
+            # text outline
+            for (x, y, color) in [(-1, -1, WHITE), (-1, 1, WHITE), (1, 1, WHITE), (1, -1, WHITE),
+                    (0, 0, BLACK)]:
+                stage_text = stage_font.render(str(label), True, color)
+                (stage_w, stage_h) = stage_font.size(str(label))
                 screen.blit(stage_text, (c_x - stage_w/2 + x, c_y + 50 + y))
-            stage_text = stage_font.render(str(label), True, BLACK)
-            screen.blit(stage_text, (c_x - stage_w/2, c_y + 50))
 
         start_angle = get_angle(float(start_h) + 1 * float(start_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
         end_angle = get_angle(float(end_h) + 1 * float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
@@ -138,7 +137,8 @@ while not done:
 
     for cal_event in EVENTS:
         #['12:00', 'have a drink']
-        (event_h, event_m) = cal_event[0].split(":")
+        (event_time, event_label) = cal_event
+        (event_h, event_m) = event_time.split(":")
 
         theta = get_angle(float(event_h) + 1.0 * float(event_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
         event_x, event_y = (circle_point(center, CLOCK_W / 2 - ARC_WIDTH, theta))
@@ -147,8 +147,7 @@ while not done:
             BLUE,
             (event_x, event_y), EVENT_SIZE, EVENT_SIZE
         )
-        #screen.blit(text, (text_x - text_w / 2, text_y))
-        event_text = event_font.render(cal_event[1], True, BLUE)
+        event_text = event_font.render(event_label, True, BLUE)
         screen.blit(event_text, (event_x + EVENT_TEXT_OFFSET, event_y - EVENT_TEXT_OFFSET))
 
     # draw clock
