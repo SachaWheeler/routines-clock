@@ -93,7 +93,7 @@ while not done:
         pygame.draw.arc(screen, COLORS[label], RECT, PI_2 - end_angle, PI_2 - start_angle, ARC_WIDTH)
 
         # draw schedule labels
-        label_text = label_font.render(str(label), True, RED)
+        label_text = label_font.render(str(label), True, COLORS[label])
         (label_w, label_h) = label_font.size(str(label))
         #print(label_w, label_h)
         if end_angle > start_angle:
