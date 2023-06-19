@@ -5,19 +5,16 @@ ORANGE = (255, 128, 0)
 PURPLE = (255, 0, 255)
 BLUE = (0, 255, 255)
 
-SLEEP = 1
-ENERGY = 2
-PRIVATE = 3
-WORK = 4
-EXERCISE = 5
-ENTERTAINMENT = 6
+(SLEEP, ENERGY, PRIVATE, WORK, EXERCISE, ENTERTAINMENT) = (
+        1, 2, 3, 4, 5, 6)
 
-SUN, MON, TUE, WED, THU, FRI, SAT = 0,1,2,3,4,5,6
-WORKDAY = (MON, TUE, WED)
-NON_WORK = (SUN, THU, FRI, SAT)
-WEEKEND = (SUN, SAT)
+(SUN, MON, TUE, WED, THU, FRI, SAT) = (0,1,2,3,4,5,6)
 WEEKDAY = (MON, TUE, WED, THU, FRI)
-EVERYDAY = (SUN, MON, TUE, WED, THU, FRI, SAT)
+WEEKEND = (SUN, SAT)
+WORKDAY = (MON, TUE, WED)
+
+EVERYDAY = WEEKEND + WEEKDAY
+NON_WORK = tuple(set(EVERYDAY) ^ set(WORKDAY))
 
 COLORS = {
     SLEEP: GREY,
@@ -29,8 +26,7 @@ COLORS = {
 }
 
 SCHEDULE = {
-    # [start_hour_min, end_hour_min, color, label]
-    (WORKDAY):(
+    WORKDAY:(
         ('05:00', 'wake/coffee', ENERGY),
         ('06:30', 'read', PRIVATE),
         ('09:00', 'work', WORK),
@@ -38,7 +34,7 @@ SCHEDULE = {
         ('16:30', 'personal', PRIVATE),
         ('20:30', 'tv', ENTERTAINMENT),
         ),
-    (NON_WORK):(
+    NON_WORK:(
         ('06:30', 'wake/coffee', ENERGY),
         ('07:00', 'read', PRIVATE),
         ('09:00', 'personal', PRIVATE),
