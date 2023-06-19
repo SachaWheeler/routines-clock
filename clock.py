@@ -3,7 +3,7 @@ environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1' # remove pygame announcement
 import pygame
 from datetime import datetime, date
 import math
-from calendar import SCHEDULE, EVENTS, COLORS, TAGS
+from calendar import SCHEDULE, EVENTS, COLORS, TAGS, RANGES
 
 
 
@@ -74,6 +74,9 @@ def get_outline_coords(outline_color, text_color):
             (1, 1, outline_color), (1, -1, outline_color),
             (0, 0, text_color)]
 
+def get_mins(time):
+    (h, m) = time.split(":")
+    return int(h) * 60 + int(m)
 
 pygame.init()
 screen = pygame.display.set_mode(SIZE)
@@ -110,11 +113,10 @@ while not done:
             for item in schedule:
                 DAY_SCHEDULE.append(item + (TAGS[item[1]],))
             # print(item[1])
+
     # sort the DAY_SCHEDULE
-    print(DAY_SCHEDULE)
     DAY_SCHEDULE.sort()
-    #put bedtime up front
-    DAY_SCHEDULE.insert(0, DAY_SCHEDULE.pop())
+    DAY_SCHEDULE.insert(0, DAY_SCHEDULE.pop()) #put bedtime up front
 
 
     for x in range(len(DAY_SCHEDULE)):
@@ -172,6 +174,23 @@ while not done:
                 theta = (end_angle  - subtract) / 2
             label_x, label_y = (circle_point(center, LABEL_R, theta))
             screen.blit(label_text, (label_x - label_w / 2 + x, label_y - label_h / 2 + x))
+
+    for range_span in RANGES:
+        # print(range_span)
+        [start, end, label, label_color] = arc
+        (start_h, start_m) = start.split(":")
+        (end_h, end_m) = end.split(":")
+
+        start_mins = int(start_h) * 60 + int(start_m)
+        end_mins = int(end_h) * 60 + int(end_m)
+        now_mins = now.hour * 60 + now.minute
+
+        midnight = get_angle(0, HOURS_IN_CLOCK)
+        current = get_angle(now.hour + 1.0 * now.minute / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+        pygame.draw.arc(screen,
+            PINK,
+            INNER_RECT, 2 * math.pi - current, 2 * math.pi - midnight,
+            ARC_WIDTH)
 
     for cal_event in EVENTS:
         #['12:00', 'have a drink']

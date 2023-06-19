@@ -62,6 +62,12 @@ SCHEDULE = {
         )
     }
 
+RANGES = [
+    ['06:00', '12:00', 'coffee'],
+    ['12:00', '17:00', 'beer'],
+    ['19:00', '23:00', 'smoke'],
+        ]
+
 EVENTS = [
     # [hour_min, color, label]
     ['12:00', 'have a drink'],
