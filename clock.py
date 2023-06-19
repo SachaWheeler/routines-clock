@@ -42,7 +42,10 @@ SIZE = (W, H)
 
 ARC_WIDTH = 100
 RECT = pygame.Rect((0, 0), (CLOCK_W, CLOCK_H))
-INNER_RECT = pygame.Rect((ARC_WIDTH, ARC_WIDTH), (CLOCK_W - ARC_WIDTH * 2, CLOCK_H - ARC_WIDTH * 2))
+INNER_RECT = pygame.Rect(
+        (ARC_WIDTH, ARC_WIDTH),
+        (CLOCK_W - ARC_WIDTH * 2, CLOCK_H - ARC_WIDTH * 2)
+        )
 LABEL_R = CLOCK_R * 5.7 / 10 # distance of hour markings from center
 EVENT_SIZE = 6
 EVENT_TEXT_OFFSET = 7
@@ -74,9 +77,6 @@ def get_outline_coords(outline_color, text_color):
             (1, 1, outline_color), (1, -1, outline_color),
             (0, 0, text_color)]
 
-def get_mins(time):
-    (h, m) = time.split(":")
-    return int(h) * 60 + int(m)
 
 pygame.init()
 screen = pygame.display.set_mode(SIZE)
@@ -153,8 +153,8 @@ while not done:
             stage = str(label)
             stage_progress = f'{int((now_mins - start_mins) * 100 / (end_mins - start_mins))}%'
 
-        start_angle = get_angle(float(start_h) + 1 * float(start_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
-        end_angle = get_angle(float(end_h) + 1 * float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+        start_angle = get_angle(float(start_h) + float(start_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+        end_angle = get_angle(float(end_h) + float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
 
         # draw schedule sectors
         pygame.draw.arc(screen,
@@ -175,29 +175,35 @@ while not done:
             label_x, label_y = (circle_point(center, LABEL_R, theta))
             screen.blit(label_text, (label_x - label_w / 2 + x, label_y - label_h / 2 + x))
 
+    inc = 10
     for range_span in RANGES:
-        # print(range_span)
-        [start, end, label, label_color] = arc
+        start, end, tag = range_span
         (start_h, start_m) = start.split(":")
         (end_h, end_m) = end.split(":")
 
-        start_mins = int(start_h) * 60 + int(start_m)
-        end_mins = int(end_h) * 60 + int(end_m)
-        now_mins = now.hour * 60 + now.minute
+        start_angle = get_angle(float(start_h) + float(start_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+        end_angle = get_angle(float(end_h) + float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
 
-        midnight = get_angle(0, HOURS_IN_CLOCK)
-        current = get_angle(now.hour + 1.0 * now.minute / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+        RANGE_RECT = pygame.Rect(
+            (ARC_WIDTH + inc, ARC_WIDTH + inc),
+            (
+                CLOCK_W - ARC_WIDTH * 2 - inc,
+                CLOCK_H - ARC_WIDTH * 2 - inc
+                )
+            )
         pygame.draw.arc(screen,
-            PINK,
-            INNER_RECT, 2 * math.pi - current, 2 * math.pi - midnight,
-            ARC_WIDTH)
+            BLUE,
+            RANGE_RECT, 2 * math.pi - end_angle,
+            2 * math.pi - start_angle,
+            10)
+        # inc -= inc
 
     for cal_event in EVENTS:
         #['12:00', 'have a drink']
         (event_time, event_label) = cal_event
         (event_h, event_m) = event_time.split(":")
 
-        theta = get_angle(float(event_h) + 1.0 * float(event_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+        theta = get_angle(float(event_h) + float(event_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
         event_x, event_y = (circle_point(center, CLOCK_W / 2 - ARC_WIDTH + 20, theta))
         pygame.draw.circle(
             screen,
@@ -216,7 +222,7 @@ while not done:
     )
 
     # draw hands
-    hour_theta = get_angle(now.hour + 1.0 * now.minute / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
+    hour_theta = get_angle(now.hour + now.minute / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
     minute_theta = get_angle(now.minute, MINUTES_IN_HOUR)
     second_theta = get_angle(now.second, SECONDS_IN_MINUTE)
 
