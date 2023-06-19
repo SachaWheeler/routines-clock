@@ -25,27 +25,40 @@ COLORS = {
     ENTERTAINMENT: PURPLE
 }
 
+TAGS = {
+       'wake/coffee': ENERGY,
+       'read': PRIVATE,
+       'work': WORK,
+       'personal': PRIVATE,
+       'tv': ENTERTAINMENT,
+       'sleep': SLEEP,
+       'breakfast': ENERGY,
+       'lunch': ENERGY,
+       'exercise': EXERCISE,
+       'tv': ENTERTAINMENT
+}
+
 SCHEDULE = {
     WORKDAY:(
-        ('05:00', 'wake/coffee', ENERGY),
-        ('06:30', 'read', PRIVATE),
-        ('09:00', 'work', WORK),
-        ('15:00', 'work', WORK),
-        ('16:30', 'personal', PRIVATE),
-        ('20:30', 'tv', ENTERTAINMENT),
+        ('05:00', 'wake/coffee'),
+        ('06:30', 'read'),
+        ('09:00', 'work'),
+        ('15:00', 'work'),
+        ('16:30', 'personal'),
+        ('20:30', 'tv'),
         ),
     NON_WORK:(
-        ('06:30', 'wake/coffee', ENERGY),
-        ('07:00', 'read', PRIVATE),
-        ('09:00', 'personal', PRIVATE),
-        ('15:00', 'personal', PRIVATE),
+        ('06:30', 'wake/coffee'),
+        ('07:00', 'read'),
+        ('09:00', 'personal'),
+        ('15:00', 'personal'),
         ),
     EVERYDAY:(
-        ('22:30', 'sleep', SLEEP),
-        ('08:30', 'breakfast', ENERGY),
-        ('13:00', 'lunch', ENERGY),
-        ('14:30', 'exercise', EXERCISE),
-        ('20:30', 'tv', ENTERTAINMENT),
+        ('22:30', 'sleep'),
+        ('08:30', 'breakfast'),
+        ('13:00', 'lunch'),
+        ('14:30', 'exercise'),
+        ('20:30', 'tv'),
         )
     }
 

@@ -3,7 +3,7 @@ environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1' # remove pygame announcement
 import pygame
 from datetime import datetime, date
 import math
-from calendar import SCHEDULE, EVENTS, COLORS
+from calendar import SCHEDULE, EVENTS, COLORS, TAGS
 
 
 
@@ -104,11 +104,14 @@ while not done:
 
     DAY_SCHEDULE = []
     DAY_CALENDAR = []
+
     for key, schedule in SCHEDULE.items():
         if DAY_OF_WEEK in key:
             for item in schedule:
-                DAY_SCHEDULE.append(item)
+                DAY_SCHEDULE.append(item + (TAGS[item[1]],))
+            # print(item[1])
     # sort the DAY_SCHEDULE
+    print(DAY_SCHEDULE)
     DAY_SCHEDULE.sort()
     #put bedtime up front
     DAY_SCHEDULE.insert(0, DAY_SCHEDULE.pop())
