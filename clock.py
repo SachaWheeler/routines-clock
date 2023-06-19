@@ -109,9 +109,10 @@ while not done:
             for item in schedule:
                 DAY_SCHEDULE.append(item)
     # sort the DAY_SCHEDULE
-    DAY_SCHEDULE.sort(key=lambda x: x[0])
+    DAY_SCHEDULE.sort()
+    #put bedtime up front
     DAY_SCHEDULE.insert(0, DAY_SCHEDULE.pop())
-    print(DAY_SCHEDULE)
+
 
     for x in range(len(DAY_SCHEDULE)):
         try:
@@ -124,8 +125,6 @@ while not done:
                 END_TIME,
                 DAY_SCHEDULE[x][1],
                 DAY_SCHEDULE[x][2]])
-    print()
-    # print(DAY_CALENDAR)
 
     midnight = get_angle(0, HOURS_IN_CLOCK)
     current = get_angle(now.hour + 1.0 * now.minute / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
