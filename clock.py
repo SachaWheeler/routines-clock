@@ -6,6 +6,7 @@ import math
 from calendar import SCHEDULE, EVENTS, COLORS
 
 
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREY = (128, 128, 128)
@@ -99,6 +100,32 @@ while not done:
     center = (c_x, c_y)
 
     now = datetime.now()
+    DAY_OF_WEEK = int(now.date().strftime('%w'))
+
+    DAY_SCHEDULE = []
+    DAY_CALENDAR = []
+    for key, schedule in SCHEDULE.items():
+        if DAY_OF_WEEK in key:
+            for item in schedule:
+                DAY_SCHEDULE.append(item)
+    # sort the DAY_SCHEDULE
+    DAY_SCHEDULE.sort(key=lambda x: x[0])
+    DAY_SCHEDULE.insert(0, DAY_SCHEDULE.pop())
+    print(DAY_SCHEDULE)
+
+    for x in range(len(DAY_SCHEDULE)):
+        try:
+            END_TIME = DAY_SCHEDULE[x+1][0]
+        except:
+            END_TIME = DAY_SCHEDULE[0][0]
+
+        DAY_CALENDAR.append([
+                DAY_SCHEDULE[x][0],
+                END_TIME,
+                DAY_SCHEDULE[x][1],
+                DAY_SCHEDULE[x][2]])
+    print()
+    # print(DAY_CALENDAR)
 
     midnight = get_angle(0, HOURS_IN_CLOCK)
     current = get_angle(now.hour + 1.0 * now.minute / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
@@ -108,7 +135,7 @@ while not done:
         ARC_WIDTH)
 
     # draw the schedule
-    for arc in SCHEDULE:
+    for arc in DAY_CALENDAR:
         [start, end, label, label_color] = arc
         (start_h, start_m) = start.split(":")
         (end_h, end_m) = end.split(":")

@@ -5,12 +5,17 @@ ORANGE = (255, 128, 0)
 PURPLE = (255, 0, 255)
 BLUE = (0, 255, 255)
 
-SLEEP = 1,
-ENERGY = 2,
-PRIVATE = 3,
-WORK = 4,
-EXERCISE = 5,
+SLEEP = 1
+ENERGY = 2
+PRIVATE = 3
+WORK = 4
+EXERCISE = 5
 ENTERTAINMENT = 6
+
+SUN, MON, TUE, WED, THU, FRI, SAT = 0,1,2,3,4,5,6
+WEEKEND = (SUN, SAT)
+WEEKDAY = (MON, TUE, WED, THU, FRI)
+EVERYDAY = (SUN, MON, TUE, WED, THU, FRI, SAT)
 
 COLORS = {
     SLEEP: GREY,
@@ -21,19 +26,36 @@ COLORS = {
     ENTERTAINMENT: PURPLE
 }
 
-SCHEDULE = [
+SCHEDULE = {
     # [start_hour_min, end_hour_min, color, label]
-    ['22:30', '06:00', 'sleep', SLEEP],
-    ['06:00', '06:30', 'coffee', ENERGY],
-    ['06:30', '08:30', 'read', PRIVATE],
-    ['08:30', '09:00', 'breakfast', ENERGY],
-    ['09:00', '13:00', 'work', WORK],
-    ['13:00', '14:30', 'lunch', ENERGY],
-    ['14:30', '15:00', 'exercise', EXERCISE],
-    ['15:00', '16:30', 'work', WORK],
-    ['16:30', '20:30', 'personal', PRIVATE],
-    ['20:30', '22:30', 'tv', ENTERTAINMENT],
-        ]
+    (MON, TUE, WED):(
+        ('05:00', 'wake/coffee', ENERGY),
+        ('06:30', 'read', PRIVATE),
+        ('09:00', 'work', WORK),
+        ('15:00', 'work', WORK),
+        ('16:30', 'personal', PRIVATE),
+        ('20:30', 'tv', ENTERTAINMENT),
+        ),
+    (THU, FRI):(
+        ('06:30', 'wake/coffee', ENERGY),
+        ('07:00', 'read', PRIVATE),
+        ('09:00', 'personal', PRIVATE),
+        ('15:00', 'personal', PRIVATE),
+        ),
+    (WEEKEND):(
+        ('06:30', 'wake/coffee', ENERGY),
+        ('07:00', 'read', PRIVATE),
+        ('09:00', 'personal', PRIVATE),
+        ('15:00', 'personal', PRIVATE),
+        ),
+    EVERYDAY:(
+        ('22:30', 'sleep', SLEEP),
+        ('08:30', 'breakfast', ENERGY),
+        ('13:00', 'lunch', ENERGY),
+        ('14:30', 'exercise', EXERCISE),
+        ('20:30', 'tv', ENTERTAINMENT),
+        )
+    }
 
 EVENTS = [
     # [hour_min, color, label]
