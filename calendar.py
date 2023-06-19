@@ -35,7 +35,6 @@ TAGS = {
        'breakfast': ENERGY,
        'lunch': ENERGY,
        'exercise': EXERCISE,
-       'tv': ENTERTAINMENT
 }
 
 SCHEDULE = {
@@ -45,7 +44,6 @@ SCHEDULE = {
         ('09:00', 'work'),
         ('15:00', 'work'),
         ('16:30', 'personal'),
-        ('20:30', 'tv'),
         ),
     NON_WORK:(
         ('06:30', 'wake/coffee'),
@@ -65,6 +63,7 @@ SCHEDULE = {
 RANGES = [
     ['06:00', '12:00', 'coffee'],
     ['12:00', '17:00', 'beer'],
+    ['12:00', '17:00', 'social'],
     ['19:00', '23:00', 'smoke'],
         ]
 
