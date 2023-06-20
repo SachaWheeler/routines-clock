@@ -175,7 +175,7 @@ while not done:
             label_x, label_y = (circle_point(center, LABEL_R, theta))
             screen.blit(label_text, (label_x - label_w / 2 + x, label_y - label_h / 2 + x))
 
-    inc = 10
+    RANGE_INC = -12
     for range_span in RANGES:
         start, end, tag = range_span
         (start_h, start_m) = start.split(":")
@@ -185,10 +185,10 @@ while not done:
         end_angle = get_angle(float(end_h) + float(end_m) / MINUTES_IN_HOUR, HOURS_IN_CLOCK)
 
         RANGE_RECT = pygame.Rect(
-            (ARC_WIDTH + inc, ARC_WIDTH + inc),
+            (ARC_WIDTH + RANGE_INC/2, ARC_WIDTH + RANGE_INC/2),
             (
-                CLOCK_W - ARC_WIDTH * 2 - inc,
-                CLOCK_H - ARC_WIDTH * 2 - inc
+                CLOCK_W - ARC_WIDTH * 2 - RANGE_INC,
+                CLOCK_H - ARC_WIDTH * 2 - RANGE_INC
                 )
             )
         pygame.draw.arc(screen,
@@ -196,7 +196,7 @@ while not done:
             RANGE_RECT, 2 * math.pi - end_angle,
             2 * math.pi - start_angle,
             10)
-        # inc -= inc
+        RANGE_INC += RANGE_INC
 
     for cal_event in EVENTS:
         #['12:00', 'have a drink']
