@@ -259,7 +259,7 @@ while not done:
         pygame.draw.line(screen, BLACK, p1, p2, TICK_R)
 
     # draw digital clock
-    digital_text = now.strftime('%H:%M:%S')
+    digital_text = now.strftime('%A, %d %B, %H:%M:%S')
     text = digital_font.render(digital_text, True, BLACK)
     screen.blit(
         text,
