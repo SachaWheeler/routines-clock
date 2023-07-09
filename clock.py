@@ -175,7 +175,7 @@ while not done:
             label_x, label_y = (circle_point(center, LABEL_R, theta))
             screen.blit(label_text, (label_x - label_w / 2 + x, label_y - label_h / 2 + x))
 
-    RANGE_INC = -12
+    RANGE_INC = -30
     for range_span in RANGES:
         start, end, tag = range_span
         (start_h, start_m) = start.split(":")
@@ -195,8 +195,8 @@ while not done:
             BLUE,
             RANGE_RECT, 2 * math.pi - end_angle,
             2 * math.pi - start_angle,
-            10)
-        RANGE_INC += RANGE_INC
+            20)
+        # RANGE_INC += RANGE_INC
 
     for cal_event in EVENTS:
         #['12:00', 'have a drink']
