@@ -53,7 +53,7 @@ SCHEDULE = {
         ),
     EVERYDAY:(
         ('22:30', 'sleep'),
-        ('08:30', 'breakfast'),
+        ('07:00', 'breakfast'),
         ('13:00', 'lunch'),
         ('14:30', 'exercise'),
         ('20:30', 'tv'),
@@ -61,7 +61,7 @@ SCHEDULE = {
     }
 
 RANGES = [
-    ['06:00', '10:00', 'coffee'],
+    ['06:00', '07:00', 'coffee'],
     ['12:00', '17:00', 'beer'],
     ['19:00', '23:00', 'smoke'],
         ]
